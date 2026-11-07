@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8fafc">
+    <meta name="description" content="RoundReady is an AI interview coach that helps you prepare, reflect, and improve across every round.">
+    <title>RoundReady — AI Interview Coach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=account-email-reminders-v3">
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="/static/js/app.js?v=account-email-reminders-v3" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="RoundReady home">
+          <span class="brand-mark" aria-hidden="true"><i data-lucide="target">◎</i></span>
+          <span class="brand-name">Round<span>Ready</span></span>
+        </a>
+        <p class="brand-tagline">Prepare. Reflect. Follow through.</p>
+        <div class="header-actions">
+          <button class="memory-toggle is-on" id="memoryToggle" type="button" aria-pressed="true">
+            <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
+            <span class="memory-toggle-copy">
+              <span class="eyebrow">PERSONAL MEMORY</span>
+              <span class="memory-state" id="memoryState">MEMORY ON</span>
+            </span>
+          </button>
+          <button class="button button-quiet button-demo" id="loadDemo" type="button">
+            <i data-lucide="sparkles" aria-hidden="true">✦</i> Pre-load Demo Data
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="capture-bar" aria-label="Live tab capture controls">
+          <div class="capture-copy">
+            <span class="capture-icon" aria-hidden="true"><i data-lucide="mic">◉</i></span>
+            <div>
+              <p class="capture-title">Live interview recording</p>
+              <p class="capture-subtitle">Capture audio from a shared browser tab</p>
+            </div>
+          </div>
+          <div class="capture-actions">
+            <span class="capture-status" id="captureStatus" role="status">
+              <span class="status-dot"></span><span id="captureStatusText">Not listening</span>
+            </span>
+            <button class="button button-primary button-capture" id="startCapture" type="button">
+              Start Silent Live Tab Listening <span class="capture-platform">(Google Meet / Zoom)</span>
+            </button>
+            <button class="button button-stop" id="stopCapture" type="button" disabled>Stop Capture</button>
+          </div>
+          <p class="capture-note" id="captureNote">Your browser will ask you to choose a tab and share its audio. Complete 15-second audio chunks are sent to the server for transcription.</p>
+        </section>
+
+        <div class="workspace-grid">
+          <section class="workspace-main" aria-label="Interview workspace">
+            <nav class="workspace-tabs" role="tablist" aria-label="Interview tools">
+              <button class="workspace-tab is-active" id="tab-roadmap" type="button" role="tab" aria-selected="true" aria-controls="panel-roadmap" data-tab="roadmap">
+                <i data-lucide="map" class="tab-icon" aria-hidden="true"></i><span>Next Round Roadmap</span>
+              </button>
+              <button class="workspace-tab" id="tab-log" type="button" role="tab" aria-selected="false" aria-controls="panel-log" data-tab="log">
+                <i data-lucide="notebook-pen" class="tab-icon" aria-hidden="true"></i><span>Log Interview</span>
+              </button>
+              <button class="workspace-tab" id="tab-patterns" type="button" role="tab" aria-selected="false" aria-controls="panel-patterns" data-tab="patterns">
+                <i data-lucide="scan-search" class="tab-icon" aria-hidden="true"></i><span>Pattern Finder</span>
+              </button>
+              <button class="workspace-tab" id="tab-progress" type="button" role="tab" aria-selected="false" aria-controls="panel-progress" data-tab="progress">
+                <i data-lucide="trending-up" class="tab-icon" aria-hidden="true"></i><span>Progress Tracker</span>
+              </button>
+              <button class="workspace-tab" id="tab-consistency" type="button" role="tab" aria-selected="false" aria-controls="panel-consistency" data-tab="consistency">
+                <i data-lucide="badge-check" class="tab-icon" aria-hidden="true"></i><span>Consistency Check</span>
+              </button>
+            </nav>
+
+            <div class="tab-panels">
+              <section class="tab-panel is-active" id="panel-roadmap" role="tabpanel" aria-labelledby="tab-roadmap" data-panel="roadmap">
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">MAKE EVERY DAY COUNT</p>
+                    <h1>Your next-round roadmap</h1>
+                    <p class="section-description">Company research matched with that company’s saved interviews, progress, and follow-ups from Hindsight.</p>
+                  </div>
+                  <span class="heading-glyph" aria-hidden="true"><i data-lucide="calendar-days">✳</i></span>
+                </div>
+                <form id="roadmapForm" class="form-card">
+                  <div class="form-grid">
+                    <label class="field">
+                      <span>Target company</span>
+                      <input id="companyInput" name="company" type="text" placeholder="e.g. Stripe" required>
+                    </label>
+                    <label class="field">
+                      <span>Role</span>
+                      <input id="roleInput" name="role" type="text" placeholder="e.g. Product Designer" required>
+                    </label>
+                    <label class="field field-days">
+                      <span>Days left</span>
+                      <input id="daysInput" name="days" type="number" min="1" max="30" value="5" required>
+                    </label>
+                  </div>
+                  <div class="form-footer">
+                    <span class="form-hint"><span class="sparkle" aria-hidden="true">✦</span> Uses Hindsight interview history and your local date</span>
+                    <button class="button button-primary" type="submit">Build my roadmap <span aria-hidden="true">→</span></button>
+                  </div>
+                </form>
+                <div class="result-area" id="roadmapResults" aria-live="polite">
+                  <div class="empty-state">
+                    <span class="empty-icon" aria-hidden="true">✧</span>
+                    <p>Your roadmap will show up here</p>
+                    <span>Tell us where you're headed and we'll map out the next steps.</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="tab-panel" id="panel-log" role="tabpanel" aria-labelledby="tab-log" data-panel="log" hidden>
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">CAPTURE THE DETAILS</p>
+                    <h1>Log an interview</h1>
+                    <p class="section-description">Save the questions, answers, and promises you want to remember.</p>
+                  </div>
+                  <span class="heading-glyph" aria-hidden="true"><i data-lucide="notebook-pen">◷</i></span>
+                </div>
+                <div class="subtabs" role="tablist" aria-label="Interview log input">
+                  <button class="subtab is-active" type="button" role="tab" aria-selected="true" data-log-tab="live">Live transcript</button>
+                  <button class="subtab" type="button" role="tab" aria-selected="false" data-log-tab="audio">Audio file</button>
+                  <button class="subtab" type="button" role="tab" aria-selected="false" data-log-tab="text">Paste transcript</button>
+                  <button class="subtab" type="button" role="tab" aria-selected="false" data-log-tab="history"><i data-lucide="folder-clock" aria-hidden="true">▤</i> Saved History</button>
+                </div>
+                <section class="log-panel is-active" data-log-panel="live">
+                  <div class="live-transcript-card">
+                    <div class="live-transcript-header">
+                      <h2><i data-lucide="audio-lines" aria-hidden="true">◉</i> Live Conversation Stream</h2>
+                      <span id="liveStatusBadge" class="live-status-badge" role="status">⚪ Idle</span>
+                    </div>
+                    <div id="liveTranscriptFeed" class="live-transcript-feed" aria-live="polite">
+                      <p class="live-transcript-placeholder">Start tab capture to see live dialogue here...</p>
+                    </div>
+                    <div class="live-transcript-actions">
+                      <p>Speaker labels are inferred and may be imperfect.</p>
+                      <div>
+                        <span id="saveConversationStatus" class="save-conversation-status" role="status"></span>
+                        <button class="button button-quiet" id="saveConversation" type="button"><i data-lucide="save" aria-hidden="true">▣</i> Save Conversation</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="live-feed-card">
+                    <div class="feed-header">
+                      <div><span class="live-indicator"></span><strong>Live session feed</strong></div>
+                      <span class="feed-label" id="feedLabel">Waiting for capture</span>
+                    </div>
+                    <div class="transcript-feed" id="transcriptFeed" aria-live="polite">
+                      <div class="feed-placeholder"><span aria-hidden="true">◌</span><p>Your session will appear here</p><span>Start tab capture above. This feed shows capture status; it won't transcribe speech on its own.</span></div>
+                    </div>
+                    <div class="feed-footer"><span class="privacy-lock" aria-hidden="true">⌑</span> Audio chunks stay in your current browser session.</div>
+                  </div>
+                  <div class="log-meta">
+                    <label class="field"><span>Company</span><input id="liveCompany" type="text" placeholder="e.g. Stripe"></label>
+                    <label class="field"><span>Round</span><input id="liveRound" type="text" placeholder="e.g. Hiring manager"></label>
+                  </div>
+                </section>
+                <section class="log-panel" data-log-panel="audio" hidden>
+                  <label class="dropzone" id="audioDropzone" for="audioFile">
+                    <input id="audioFile" type="file" accept=".mp3,.wav,audio/mpeg,audio/wav,audio/x-wav">
+                    <span class="upload-icon" aria-hidden="true">↑</span>
+                    <strong>Drop an audio file here</strong>
+                    <span>or <span class="upload-link">browse files</span></span>
+                    <small>MP3 or WAV · Maximum 25 MB</small>
+                    <span class="selected-file" id="selectedFile" aria-live="polite"></span>
+                  </label>
+                  <div class="log-meta audio-company-field">
+                    <label class="field"><span>Company</span><input id="audioCompany" type="text" placeholder="e.g. Stripe"></label>
+                    <label class="field"><span>Round</span><input id="audioRound" type="text" placeholder="e.g. Round 2"></label>
+                  </div>
+                  <p class="upload-note">MP3 and WAV uploads are sent to the server for transcription and Hindsight storage.</p>
+                </section>
+                <section class="log-panel" data-log-panel="text" hidden>
+                  <label class="field transcript-field" for="transcriptInput">
+                    <span>Interview transcript</span>
+                    <textarea id="transcriptInput" rows="9" placeholder="Paste your transcript or notes here…"></textarea>
+                  </label>
+                  <div class="log-meta">
+                    <label class="field"><span>Company</span><input id="textCompany" type="text" placeholder="e.g. Stripe"></label>
+                    <label class="field"><span>Round</span><input id="textRound" type="text" placeholder="e.g. Round 2"></label>
+                  </div>
+                </section>
+                <section class="log-panel history-panel" data-log-panel="history" hidden>
+                  <div class="history-heading">
+                    <div>
+                      <h2>Saved interview conversations</h2>
+                      <p>After 7 days, raw dialogue is replaced with a structured summary in the same Hindsight file. Dates are shown in your local time. Delete a conversation any time.</p>
+                    </div>
+                    <button class="button button-quiet" id="refreshHistory" type="button">Refresh</button>
+                  </div>
+                  <div id="savedConversations" class="saved-conversations" aria-live="polite">
+                    <div class="side-empty">Loading saved conversations…</div>
+                  </div>
+                </section>
+                <div class="process-row" id="processInterviewRow">
+                  <span class="form-hint"><span class="privacy-lock" aria-hidden="true">⌑</span> Processed by configured services and saved to Hindsight</span>
+                  <button class="button button-primary" id="processInterview" type="button">Process &amp; Save to Hindsight <span aria-hidden="true">→</span></button>
+                </div>
+                <p class="inline-feedback" id="logFeedback" role="status"></p>
+              </section>
+
+              <section class="tab-panel" id="panel-patterns" role="tabpanel" aria-labelledby="tab-patterns" data-panel="patterns" hidden>
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">SPOT THE REPEAT</p>
+                    <h1>Patterns worth breaking</h1>
+                    <p class="section-description">Small, recurring habits across interviews can make a big difference.</p>
+                  </div>
+                  <span class="heading-glyph" aria-hidden="true"><i data-lucide="scan-search">⌁</i></span>
+                </div>
+                <div class="analytics-grid" id="patternsContainer"></div>
+              </section>
+
+              <section class="tab-panel" id="panel-progress" role="tabpanel" aria-labelledby="tab-progress" data-panel="progress" hidden>
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">YOUR GROWTH, IN CONTEXT</p>
+                    <h1>Progress tracker</h1>
+                    <p class="section-description">Track answer quality over time and see specific gaps in approach, confidence, communication, and technical reasoning.</p>
+                  </div>
+                  <span class="heading-glyph" aria-hidden="true"><i data-lucide="chart-no-axes-combined">↗</i></span>
+                </div>
+                <div class="progress-list" id="progressContainer"></div>
+              </section>
+
+              <section class="tab-panel" id="panel-consistency" role="tabpanel" aria-labelledby="tab-consistency" data-panel="consistency" hidden>
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">SAY IT LIKE YOU MEAN IT</p>
+                    <h1>Consistency check</h1>
+                    <p class="section-description">Compare a proposed answer with your past statements to catch mismatches.</p>
+                  </div>
+                  <span class="heading-glyph" aria-hidden="true"><i data-lucide="badge-check">◎</i></span>
+                </div>
+                <form class="consistency-card" id="consistencyForm">
+                  <label class="field" for="answerInput"><span>Your proposed answer</span>
+                    <textarea id="answerInput" rows="5" placeholder="Paste an answer you'd like to check…" required></textarea>
+                  </label>
+                  <div class="form-footer">
+                    <span class="form-hint"><span class="sparkle" aria-hidden="true">✦</span> Compared with saved interview notes</span>
+                    <button class="button button-primary" type="submit">Check for consistency <span aria-hidden="true">→</span></button>
+                  </div>
+                </form>
+                <div id="consistencyResults" class="result-area" aria-live="polite"></div>
+              </section>
+            </div>
+          </section>
+
+          <aside class="sidebar" aria-label="Your interview memory">
+            <section class="side-card memory-card">
+              <div class="side-card-heading">
+                <div><span class="side-icon memory-icon" aria-hidden="true"><i data-lucide="brain">✧</i></span><h2>What I Remember</h2></div>
+                <span class="live-tag"><span></span> LIVE</span>
+              </div>
+              <p class="side-description">The details that make your next answer stronger.</p>
+              <div class="memory-list" id="memoryList" aria-live="polite">
+                <div class="side-empty">Your saved interview notes will appear here.</div>
+              </div>
+              <button class="text-button" type="button" data-open-tab="log">Explore interview history <span aria-hidden="true">→</span></button>
+            </section>
+
+            <section class="side-card promises-card">
+              <div class="side-card-heading">
+                <div><span class="side-icon promise-icon" aria-hidden="true"><i data-lucide="list-checks">✓</i></span><h2>Pending promises</h2></div>
+                <span class="count-badge" id="promiseCount">0</span>
+              </div>
+              <p class="side-description">From interview commitments and notes saved in Remember this.</p>
+              <div class="promise-list" id="promiseList" aria-live="polite">
+                <div class="side-empty">No open commitments. You're all caught up.</div>
+              </div>
+            </section>
+
+            <section class="side-card remember-card">
+              <div class="side-card-heading">
+                <div><span class="side-icon note-icon" aria-hidden="true"><i data-lucide="notebook-pen">✎</i></span><h2>Remember this</h2></div>
+              </div>
+              <p class="side-description">Save a note to Hindsight and add it to Pending promises as a reminder.</p>
+              <form id="rememberForm">
+                <label class="sr-only" for="rememberInput">A fact to remember</label>
+                <textarea id="rememberInput" rows="3" placeholder="Add a detail, win, or follow-up…"></textarea>
+                <label class="field remember-date-field" for="rememberDueDate">
+                  <span>Reminder date <span class="form-hint">(optional)</span></span>
+                  <input id="rememberDueDate" type="date">
+                </label>
+                <p class="form-hint remember-date-hint">Reminders are sent only to the Resend account email configured on the server. Deadlines are checked every five minutes, and new promises are checked immediately.</p>
+                <div class="remember-footer">
+                  <span class="memory-enabled-note" id="memoryEnabledNote"><span class="status-dot"></span> Saved to Hindsight memory</span>
+                  <button class="button button-primary button-small" type="submit" id="rememberSubmit">Save note <span aria-hidden="true">↗</span></button>
+                </div>
+              </form>
+              <p class="inline-feedback" id="rememberFeedback" role="status"></p>
+            </section>
+            <p class="sidebar-footnote"><span aria-hidden="true">⌑</span> Interview transcripts are sent to configured AI and memory services.</p>
+          </aside>
+        </div>
+      </main>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </body>
+</html>
